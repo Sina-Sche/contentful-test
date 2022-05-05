@@ -1,5 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { client } from "./client";
+import { ThemeProvider } from "styled-components";
+import theme from "./Theme";
+import {
+  AppContainer,
+  GlobalStyle,
+  Header,
+  Image,
+  RecipeInfo,
+  RecipeTitle,
+  RecipeTitleContainer,
+} from "./AppStyles";
 
 function App() {
   const [data, setData] = useState<any>();
@@ -16,20 +27,27 @@ function App() {
   }, [entryId]);
 
   return (
-    <div>
-      <h1>Contentful Test</h1>
-      {data && (
-        <>
-          <img
-            src={data.image.fields.file.url}
-            alt={data.image.fields.description}
-          />
-          <span>{data.headline}</span>
-          <section>{data.description.content[0].content[0].value}</section>
-          <section>{data.recipe}</section>
-        </>
-      )}
-    </div>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <AppContainer>
+        <Header>Tagesrezept</Header>
+        {data && (
+          <>
+            <Image
+              src={data.image.fields.file.url}
+              alt={data.image.fields.description}
+            />
+            <RecipeTitleContainer>
+              <RecipeTitle>{data.headline}</RecipeTitle>
+              <RecipeInfo>
+                <p>⏰ {data.duration} Min. </p>
+                <p>{data.veggie ? "🌱" : ""}</p>
+              </RecipeInfo>
+            </RecipeTitleContainer>
+          </>
+        )}
+      </AppContainer>
+    </ThemeProvider>
   );
 }
 
