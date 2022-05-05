@@ -14,10 +14,9 @@ function App() {
         .catch((e) => console.error(e));
     }
   }, [entryId]);
-  data &&
-    console.log("Description", data.description.content[0].content[0].value);
+
   return (
-    <div className="App">
+    <div>
       <h1>Contentful Test</h1>
       {data && (
         <>
