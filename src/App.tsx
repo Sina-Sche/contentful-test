@@ -2,49 +2,40 @@ import { useEffect, useState } from "react";
 import { client } from "./client";
 import { ThemeProvider } from "styled-components";
 import theme from "./Theme";
-import {
-  AppContainer,
-  GlobalStyle,
-  Header,
-  Image,
-  RecipeInfo,
-  RecipeTitle,
-  RecipeTitleContainer,
-} from "./AppStyles";
+import { AppContainer, GlobalStyle, Header } from "./AppStyles";
+import { Recipe } from "./components/Recipe";
 
 function App() {
-  const [data, setData] = useState<any>();
-  const entryId = process.env.REACT_APP_ENTRY_ID;
+  const [recipes, setRecipes] = useState<any>();
   useEffect(() => {
-    if (entryId) {
-      client
-        .getEntry(entryId)
-        .then((response) => {
-          setData(response.fields);
-        })
-        .catch((e) => console.error(e));
+    client
+      .getEntries({
+        content_type: "recipe",
+        select: "sys.id,fields",
+      })
+      .then((response) => setRecipes(response.items))
+      .catch((e) => console.error(e));
+  }, []);
+
+  const getRecipeData = (recipes: any) => {
+    if (recipes) {
+      return recipes.map((recipe: any) => recipe.fields);
     }
-  }, [entryId]);
+  };
+  const recipeData = getRecipeData(recipes);
 
   return (
     <ThemeProvider theme={theme}>
       <GlobalStyle />
       <AppContainer>
         <Header>Tagesrezept</Header>
-        {data && (
-          <>
-            <Image
-              src={data.image.fields.file.url}
-              alt={data.image.fields.description}
-            />
-            <RecipeTitleContainer>
-              <RecipeTitle>{data.headline}</RecipeTitle>
-              <RecipeInfo>
-                <p>⏰ {data.duration} Min. </p>
-                <p>{data.veggie ? "🌱" : ""}</p>
-              </RecipeInfo>
-            </RecipeTitleContainer>
-          </>
+
+        {recipes && recipeData && (
+          <div>
+            {recipeData.map((recipe: any) => {
+              return <Recipe {...recipe} />;
+            })}
+          </div>
         )}
       </AppContainer>
     </ThemeProvider>

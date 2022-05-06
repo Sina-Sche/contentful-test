@@ -18,3 +18,14 @@ interface Fonts {
 interface Fontsizes {
   large: number;
 }
+
+export interface RecipeProps {
+  image: ImageObject;
+  headline: string;
+  duration: number;
+  veggie: boolean;
+}
+
+interface ImageObject {
+  fields: any;
+}

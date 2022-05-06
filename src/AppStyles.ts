@@ -7,10 +7,14 @@ body{
 }`;
 
 export const AppContainer = styled.div`
+  height: 100vh;
+  width: 100vw;
+`;
+
+export const RecipeContainer = styled.div`
   position: relative;
   box-sizing: border-box;
   width: 100vw;
-  height: 100vh;
 `;
 export const Header = styled.h1`
   background-color: ${(props) => props.theme.colors.primary};
@@ -19,11 +23,23 @@ export const Header = styled.h1`
   margin: 0;
   color: ${(props) => props.theme.colors.secondary};
   font-family: ${(props) => props.theme.fonts.heading};
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100vw;
 `;
 
 export const Image = styled.img`
   max-width: 100vw;
   height: 100vh;
+
+  // first steps to create book page flip effect
+  /* :hover {
+    transition: 6s ease;
+    transform-origin: top left;
+    transform: rotateX(90deg);
+  } */
 `;
 
 export const RecipeTitleContainer = styled.div`
